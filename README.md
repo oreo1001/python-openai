@@ -19,6 +19,7 @@ This is an example pet name generator app used in the OpenAI API [quickstart tut
    ```bash
    $ python -m venv venv
    $ . venv/bin/activate
+   ($ source venv/Scripts/activate
    ```
 
 5. Install the requirements
@@ -30,7 +31,7 @@ This is an example pet name generator app used in the OpenAI API [quickstart tut
 6. Make a copy of the example environment variables file
 
    ```bash
-   $ cp .env.example .env
+   $ cp .env.example .env   (api key 복사 하여 env 파일 생성하기)
    ```
 
 7. Add your [API key](https://beta.openai.com/account/api-keys) to the newly created `.env` file
