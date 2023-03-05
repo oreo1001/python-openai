@@ -3,7 +3,6 @@ import os
 import openai
 from flask import Flask, redirect, render_template, request, url_for, jsonify
 from flask_cors import CORS
-
 from flask_restx import Resource, Api
 from todo import Todo
 from auth import Auth
