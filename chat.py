@@ -14,8 +14,10 @@ Chat = Namespace(
 @Chat.route('')
 class ChatSimple(Resource):
     def get(self):
-        """음성파일로 채팅의 답변을 받습니다."""   
+        """음성파일로 채팅의 답변을 받습니다."""  
+
         audio_file = open("./녹음.m4a", "rb")
+
         transcript = openai.Audio.transcribe("whisper-1", audio_file)
         # return {"result": transcript}
 
@@ -68,5 +70,6 @@ class ChatSimple(Resource):
         print(result)
         
         print(time.time() - now)
+        #
 
         return {'result': result}
