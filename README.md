@@ -20,7 +20,8 @@ This is an example pet name generator app used in the OpenAI API [quickstart tut
    $ python -m venv venv
    $ . venv/bin/activate
    ($ source venv/Scripts/activate
-   python3 사용? pip3?
+   배포시에는 python3 사용? pip3?
+   $python3 -m venv venv
    ```
 
 5. Install the requirements
