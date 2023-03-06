@@ -12,7 +12,10 @@ Chat = Namespace(
 class ChatSimple(Resource):
     def get(self):
         """음성파일로 채팅의 답변을 받습니다."""
+        # with open('file.webm', 'wb') as f_vid:
+        #    f_vid.write(base64.b64encode(video_stream))
         audio_file = open("./녹음.m4a", "rb")
+
         transcript = openai.Audio.transcribe("whisper-1", audio_file)
         # return {"result": transcript}
 

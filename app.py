@@ -9,7 +9,9 @@ from auth import Auth
 from chat import Chat
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, supports_credentials=True)
+#CORS(app, resources={r'*': {'origins': 'https://hwangtoemat.github.io'}})
+
 api = Api(
     app,
     version='0.1',
@@ -48,12 +50,12 @@ def chat():
 @app.route("/receive", methods=['post'])
 def form():
     files = request.files
-    file = files.get('file')
-    print(file)
-
-    with open(os.path.abspath(f'backend/audios/{file}'), 'wb') as f:
+    #file = files.get('file')
+    print(files)
+    '''
+    with open(os.path.abspath(f'audios/{file}'), 'wb') as f:
         f.write(file.content)
-
+    '''
     response = jsonify("File received and saved!")
     response.headers.add('Access-Control-Allow-Origin', '*')
 
