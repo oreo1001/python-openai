@@ -7,6 +7,10 @@ from flask_restx import Resource, Api
 from todo import Todo
 from auth import Auth
 from chat import Chat
+from gtts import gTTS
+from playsound import playsound
+import time
+from flask import send_file
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
@@ -45,6 +49,17 @@ def chat():
     result = hi['choices'][0]['message']['content']
     return result
 '''
+
+
+@app.route("/speak", methods=['get'])
+def speak():
+    text1 = "안녕하세요, 저는 IML 이에요."
+    tts = gTTS(text=text1, lang='ko')
+    date_string = str(time.time())
+    filename = "voice"+date_string+".mp3"
+    tts.save(filename)
+    playsound(filename)
+    return send_file(filename)
 
 
 @app.route("/receive", methods=['post'])
