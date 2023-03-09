@@ -20,3 +20,5 @@ node_modules
 package-lock.json
 .env
 temp.mp3
+.env.example
+.env.example
