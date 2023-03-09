@@ -51,7 +51,7 @@ def chat():
 '''
 
 
-@app.route("/speak", methods=['get'])
+@app.route("/speak", methods=['post'])
 def speak():
     text1 = "안녕하세요, 저는 IML 이에요."
     tts = gTTS(text=text1, lang='ko')

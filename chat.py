@@ -4,14 +4,46 @@ from flask_restx import Resource, Api, Namespace, fields
 import openai
 from pydub import AudioSegment
 import time
+from gtts import gTTS
+from flask import send_file
 
 Chat = Namespace(
     name="Chat",
     description="Chatgpt를 작성하기 위해 사용하는 API.",
 )
 
+@Chat.route('/TTS')
+class ChatSimple(Resource):
+    def post(self):
+        text = request.json.get('text')
+        tts = gTTS(text=text, lang='ko')
+        date_string = str(time.time())
+        filename = "voice"+date_string+".mp3"
+        tts.save(filename)
+        return send_file(filename)
 
-@Chat.route('')
+@Chat.route('/askGPT')
+class ChatSimple(Resource):
+    def post(self):
+        text = request.json.get('text')
+
+        print(text)
+
+        hi = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant"},
+                {"role": "assistant", "content": text},
+            ]
+        )
+        
+        print(hi)
+        result = hi['choices'][0]['message']['content']
+
+        return {'result': result}
+
+
+@Chat.route('/transcribe')
 class ChatSimple(Resource):
     def get(self):
         """음성파일로 채팅의 답변을 받습니다."""  
@@ -30,7 +62,7 @@ class ChatSimple(Resource):
         )
         result = hi['choices'][0]['message']['content']
 
-        return {'result': result}
+        return {'transcribe': transcript, 'result': result}
     
     def post(self):
         print('post 호출됨')
@@ -56,17 +88,9 @@ class ChatSimple(Resource):
             "whisper-1", audio)
         
         print(transcript['text'])
+
+        result = transcript['text']
         
-        hi = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant"},
-                {"role": "assistant", "content": transcript['text']},
-            ]
-        )
-        
-        print(hi)
-        result = hi['choices'][0]['message']['content']
         print(result)
         
         print(time.time() - now)
