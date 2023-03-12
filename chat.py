@@ -20,7 +20,7 @@ class ChatSimple(Resource):
         date_string = str(time.time())
         filename = "voice"+date_string+".mp3"
         tts.save(filename)
-        return send_file(filename)
+        return send_file(filename, mimetype='audio/mpeg', as_attachment=True)
 
 @Chat.route('/askGPT')
 class ChatSimple(Resource):
