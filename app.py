@@ -7,7 +7,6 @@ from flask_restx import Resource, Api
 from todo import Todo
 from auth import Auth
 from chat import Chat
-from gtts import gTTS
 import time
 from flask import send_file
 
