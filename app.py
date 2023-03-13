@@ -7,7 +7,6 @@ from flask_restx import Resource, Api
 from todo import Todo
 from auth import Auth
 from chat import Chat
-#from gtts import gTTS
 import time
 from flask import send_file
 
@@ -24,8 +23,8 @@ api = Api(
     contact="ohsimon77@naver.com",
     license=""
 )
-openai.api_key = os.getenv("OPENAI_API_KEY")
-
+#openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.api_key = "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"
 api.add_namespace(Todo, '/todos')
 api.add_namespace(Auth, '/auth')
 api.add_namespace(Chat, '/chat')
