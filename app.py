@@ -23,8 +23,8 @@ api = Api(
     contact="ohsimon77@naver.com",
     license=""
 )
-#openai.api_key = os.getenv("OPENAI_API_KEY")
-openai.api_key = "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"
+openai.api_key = os.getenv("OPENAI_API_KEY")
+# dddd
 api.add_namespace(Todo, '/todos')
 api.add_namespace(Auth, '/auth')
 api.add_namespace(Chat, '/chat')
