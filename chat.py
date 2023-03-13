@@ -2,10 +2,10 @@ from io import BytesIO
 from flask import request, jsonify
 from flask_restx import Resource, Api, Namespace, fields
 import openai
-#from pydub import AudioSegment
 import time
-from gtts import gTTS
 from flask import send_file
+#from pydub import AudioSegment
+#from gtts import gTTS
 
 Chat = Namespace(
     name="Chat",
