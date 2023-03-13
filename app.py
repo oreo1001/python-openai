@@ -7,6 +7,7 @@ from flask_restx import Resource, Api
 from todo import Todo
 from auth import Auth
 from chat import Chat
+#from gtts import gTTS
 import time
 from flask import send_file
 
@@ -48,7 +49,7 @@ def chat():
     return result
 '''
 
-
+'''
 @app.route("/speak", methods=['post'])
 def speak():
     text1 = "안녕하세요, 저는 IML 이에요."
@@ -57,6 +58,7 @@ def speak():
     filename = "voice"+date_string+".mp3"
     tts.save(filename)
     return send_file(filename)
+'''
 
 
 @app.route("/receive", methods=['post'])
