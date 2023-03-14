@@ -1,8 +1,10 @@
 from io import BytesIO
 from flask import request, jsonify
 from flask_restx import Resource, Api, Namespace, fields
+from pymongo import MongoClient
 import openai
 import time
+from datetime import datetime
 from flask import send_file
 #from pydub import AudioSegment
 #from gtts import gTTS
@@ -27,8 +29,10 @@ class ChatSimple(Resource):
 @Chat.route('/askGPT')
 class ChatSimple(Resource):
     def post(self):
+        now = datetime.now()
+        input_time = now.strftime("%Y-%m-%d %H:%M:%S") 
         text = request.json.get('text')
-        
+        user = request.json.get('user')
         prompt1 = "You can transform into an American citizen who is my spoken English teacher and improver. Create your backstory and temperament, and with appropriate characteristics and responses, you will immerse yourself into the persona fully you will be that persona in our conversation, responding in the first person."
         prompt2 = "\nPlease proceed with the class by following the following rules."
         prompt3 = "\n1. I will speak to you in English and you will reply to me in English to practice my spoken English."
@@ -48,8 +52,27 @@ class ChatSimple(Resource):
         prompt = prompt1+prompt2+prompt3+prompt4 + \
             prompt5+prompt6+prompt7+prompt8+prompt9 + \
             prompt10+prompt11+prompt12+prompt13+prompt14+prompt15+prompt16
+        
 
-        print(text)
+        client = MongoClient('mongodb://localhost:27017/')
+        db = client['JUNGMO_FLASK']
+        # Create the user collection
+        user_collection = db['users']
+        count = 1
+        query = {
+            '_id':user,
+        }
+        if (user_collection.count_documents(query)==0):
+            user_collection.insert_one({
+            '_id':user,
+            'count':1,
+            'first_used_time':input_time
+        })
+        else:
+            info = user_collection.find_one(query)
+            info['count']+=1
+            update= {'$set': info}
+            user_collection.find_one_and_update(query,update,return_document=False)
 
         if (text == 'JungwonJungmo'): 
             hi = openai.ChatCompletion.create(
@@ -68,9 +91,29 @@ class ChatSimple(Resource):
                     {"role": "user", "content": text}
                 ]
             )
+        now = datetime.now()
+        output_time = now.strftime("%Y-%m-%d %H:%M:%S") 
         print(hi)
         result = hi['choices'][0]['message']['content']
-
+        input = {
+            '_id' : user+'_input:'+str(count),
+            'user': user,
+            'type': "prompt",
+            'text': text,
+            "time": input_time,
+            "token": hi['usage']['prompt_tokens']
+        }
+        output = {
+            '_id': user+'_output:'+str(count),
+            'user': user,
+            'type': "completion",
+            'text': result,
+            "time": output_time,
+            "token": hi['usage']['completion_tokens']
+        }
+        chat_collection = db['chat']
+        chat_collection.insert_one(input)
+        chat_collection.insert_one(output)
         return {'result': result}
 
 
